@@ -21,6 +21,12 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
+                        v-model="editedItem.id"
+                        label="Track ID"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
                         v-model="editedItem.title"
                         label="Track title"
                       ></v-text-field>
@@ -67,12 +73,6 @@
                         label="Year"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.keywords"
-                        label="Keywords"
-                      ></v-text-field>
-                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -93,12 +93,7 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="tracks"
-          :search="search"
-          show-expand
-        >
+        <v-data-table :headers="headers" :items="tracks" :search="search">
           <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">
               mdi-pencil
@@ -108,11 +103,7 @@
             </v-icon>
           </template>
           <!-- eslint-disable-next-line -->
-          <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">
-              Keywords: {{ item.keywords.join(', ') }}
-            </td>
-          </template>
+          <!-- <template v-slot:expanded-item="{ headers, item }"> </template> -->
         </v-data-table>
       </v-card>
     </v-flex>
@@ -126,6 +117,7 @@ export default {
     dialog: false,
     editedIndex: -1,
     editedItem: {
+      id: '',
       title: '',
       artist: '',
       bpm: 0,
@@ -133,10 +125,11 @@ export default {
       rating: 0,
       label: '',
       genre: '',
-      year: 2020,
+      year: '',
       keywords: []
     },
     defaultItem: {
+      id: '',
       title: '',
       artist: '',
       bpm: 0,
@@ -177,7 +170,7 @@ export default {
     deleteItem(item) {
       const index = this.$store.state.tracks.indexOf(item)
       confirm('Are you sure you want to delete this item?') &&
-        this.$store.state.tracks.splice(index, 1)
+        this.$store.commit('deleteTrack', index)
     },
 
     close() {
@@ -190,9 +183,12 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.tracks[this.editedIndex], this.editedItem)
+        this.$store.commit('updateTrack', {
+          index: this.editedIndex,
+          item: this.editedItem
+        })
       } else {
-        this.$store.state.tracks.push(this.editedItem)
+        this.$store.commit('saveTrack', this.editedItem)
       }
       this.close()
     }

@@ -9,8 +9,7 @@ export const state = () => ({
       rating: 5,
       label: 'Keinemusik',
       genre: 'Tech-House',
-      year: 2012,
-      keywords: ['mid-early', 'tribal', 'slow', 'smart', 'after', 'layer']
+      year: 2012
     }
   ],
   headers: [
@@ -77,8 +76,20 @@ export const state = () => ({
     {
       text: 'Keywords',
       align: 'center',
-      sortable: true,
+      sortable: false,
       value: 'keywords'
     }
   ]
 })
+
+export const mutations = {
+  deleteTrack(state, index) {
+    state.tracks.splice(index, 1)
+  },
+  saveTrack(state, track) {
+    state.tracks.push(track)
+  },
+  updateTrack(state, track) {
+    Object.assign(state.tracks[track.index], track.item)
+  }
+}
