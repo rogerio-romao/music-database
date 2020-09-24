@@ -10,6 +10,28 @@ export const state = () => ({
       label: 'Keinemusik',
       genre: 'Tech-House',
       year: 2012
+    },
+    {
+      id: 2,
+      title: 'Harmonica Track',
+      artist: 'Soul Boy',
+      bpm: 120,
+      key: '10m',
+      rating: 4,
+      label: 'Nervous Records',
+      genre: 'House',
+      year: 2008
+    },
+    {
+      id: 3,
+      title: 'Gorilla',
+      artist: 'Nick Curly',
+      bpm: 125,
+      key: '5d',
+      rating: 4,
+      label: 'Mindshake Records',
+      genre: 'Tech-House',
+      year: 2016
     }
   ],
   headers: [
